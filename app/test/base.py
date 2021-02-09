@@ -1,6 +1,7 @@
 from flask_testing import TestCase
 from app.main import db
 from manage import app
+from app.main.model.user import Gender
 
 
 class BaseTestCase(TestCase):
@@ -12,6 +13,13 @@ class BaseTestCase(TestCase):
 
     def setUp(self):
         db.create_all()
+
+        # Generate some genders for unit tests.
+        male = Gender(value='Male', active=True)
+        female = Gender(value='Female', active=True)
+        db.session.add(male)
+        db.session.add(female)
+
         db.session.commit()
 
     def tearDown(self):

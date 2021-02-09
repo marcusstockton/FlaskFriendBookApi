@@ -1,7 +1,7 @@
 import unittest
 import json
-from app.test.base import BaseTestCase
 
+from app.test.base import BaseTestCase
 
 def register_user(self):
     return self.client.post(
@@ -9,7 +9,12 @@ def register_user(self):
         data=json.dumps(dict(
             email='example@gmail.com',
             username='username',
-            password='123456'
+            password='123456',
+            first_name='Mark',
+            last_name='Twain',
+            date_of_birth='1982-2-3',
+            city='Exeter',
+            gender_id=1
         )),
         content_type='application/json'
     )

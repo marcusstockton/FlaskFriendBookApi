@@ -5,6 +5,13 @@ from app.main.model.blacklist import BlacklistToken
 from ..config import key
 
 
+# helper table
+interests = db.Table('interests',
+                     db.Column('interest_id', db.Integer, db.ForeignKey('interest.id'), primary_key=True),
+                     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+                     )
+
+
 class User(db.Model):
     """ User Model for storing user related details """
     __tablename__ = "user"
@@ -22,6 +29,8 @@ class User(db.Model):
     city = db.Column(db.String(200), nullable=True)
     gender_id = db.Column(db.Integer, db.ForeignKey('gender.id'))
     gender = db.relationship("Gender")
+    interests = db.relationship('Interest', secondary=interests, lazy='subquery',
+                                backref=db.backref('users', lazy=True))
 
     @property
     def password(self):
@@ -86,3 +95,14 @@ class Gender(db.Model):
 
     def __repr__(self):
         return "<Gender '{}'>".format(self.value)
+
+
+class Interest(db.Model):
+    """ Gender Model for storing user interests """
+    __tablename__ = "interest"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    value = db.Column(db.String(20), unique=True)
+    active = db.Column(db.Boolean, nullable=False, default=False)
+
+
+
