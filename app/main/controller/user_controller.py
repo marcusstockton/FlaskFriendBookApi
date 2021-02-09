@@ -7,6 +7,7 @@ from ..service.user_service import save_new_user, get_all_users, get_a_user
 
 api = UserDto.api
 _user = UserDto.user
+_user_detail = UserDto.user_details
 
 
 @api.route('/')
@@ -33,7 +34,7 @@ class UserList(Resource):
 @api.response(404, 'User not found.')
 class User(Resource):
     @api.doc('get a user')
-    @api.marshal_with(_user)
+    @api.marshal_with(_user_detail)
     def get(self, public_id):
         """get a user given its identifier"""
         user = get_a_user(public_id)
