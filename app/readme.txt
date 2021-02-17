@@ -9,3 +9,7 @@ python manage.py test
 
 Running:
 python manage.py run
+
+
+
+P@55w0rd

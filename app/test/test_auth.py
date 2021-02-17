@@ -39,13 +39,14 @@ class TestAuthBlueprint(BaseTestCase):
                 # user registration
                 user_response = register_user(self)
                 response_data = json.loads(user_response.data)
-                self.assertTrue(response_data['Authorization'])
+                self.assertTrue('Authorization' in response_data)
+                self.assertTrue(str, type(response_data['Authorization']))
                 self.assertEqual(user_response.status_code, 201)
 
                 # registered user login
                 login_response = login_user(self)
                 data = json.loads(login_response.data)
-                self.assertTrue(data['Authorization'])
+                self.assertTrue('token' in data)
                 self.assertEqual(login_response.status_code, 200)
 
     def test_valid_logout(self):
@@ -60,7 +61,7 @@ class TestAuthBlueprint(BaseTestCase):
             # registered user login
             login_response = login_user(self)
             data = json.loads(login_response.data)
-            self.assertTrue(data['Authorization'])
+            self.assertTrue(data['token'])
             self.assertEqual(login_response.status_code, 200)
 
             # valid token logout
@@ -69,7 +70,7 @@ class TestAuthBlueprint(BaseTestCase):
                 headers=dict(
                     Authorization='Bearer ' + json.loads(
                         login_response.data
-                    )['Authorization']
+                    )['token']
                 )
             )
             data = json.loads(response.data)

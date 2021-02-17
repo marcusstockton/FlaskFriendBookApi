@@ -14,7 +14,7 @@ _user_detail = UserDto.user_details
 class UserList(Resource):
     @token_required
     @api.doc('list_of_registered_users')
-    @api.marshal_list_with(_user, envelope='data')
+    @api.marshal_list_with(_user_detail)
     def get(self):
         """List all registered users"""
         return get_all_users()

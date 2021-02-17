@@ -15,10 +15,11 @@ class BaseTestCase(TestCase):
         db.create_all()
 
         # Generate some genders for unit tests.
-        male = Gender(value='Male', active=True)
-        female = Gender(value='Female', active=True)
-        db.session.add(male)
-        db.session.add(female)
+        if db.session.query(Gender).count() == 0:
+            male = Gender(value='Male', active=True)
+            female = Gender(value='Female', active=True)
+            db.session.add(male)
+            db.session.add(female)
 
         db.session.commit()
 

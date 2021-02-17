@@ -15,7 +15,10 @@ class Auth:
                     response_object = {
                         'status': 'success',
                         'message': 'Successfully logged in.',
-                        'Authorization': auth_token
+                        'username': user.username,
+                        'firstName': user.first_name,
+                        'lastName': user.last_name,
+                        'token': auth_token
                     }
                     return response_object, 200
             else:
@@ -63,7 +66,7 @@ class Auth:
         # get the auth token
         auth_token = new_request.headers.get('Authorization')
         if auth_token:
-            resp = User.decode_auth_token(auth_token)
+            resp = User.decode_auth_token(auth_token.split(' ')[1])
             if not isinstance(resp, str):
                 user = User.query.filter_by(id=resp).first()
                 response_object = {

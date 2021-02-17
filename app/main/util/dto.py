@@ -1,16 +1,16 @@
 from flask_restx import Namespace, fields
 
 
-class InterestDto:
-    api = Namespace('interest', description='user interest related operations')
+
+
+class UserDto:
+    api = Namespace('user', description='user related operations')
+
     interest = api.model('interest', {
         'id': fields.Integer(description="Id field"),
         'value': fields.String(required=True, description='The interest')
     })
 
-
-class UserDto:
-    api = Namespace('user', description='user related operations')
     user = api.model('user', {
         'email': fields.String(required=True, description='user email address'),
         'username': fields.String(required=True, description='user username'),
@@ -33,7 +33,7 @@ class UserDto:
         'city': fields.String(description='City'),
         'gender_id': fields.Integer(description='Gender'),
         'public_id': fields.String(description='user Identifier'),
-        'interests': fields.List(fields.Nested(InterestDto.interest), required=False, description='interests'),
+        'interests': fields.List(fields.Nested(interest), required=False, description='interests'),
     })
 
 
