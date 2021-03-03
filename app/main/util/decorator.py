@@ -1,7 +1,8 @@
 from functools import wraps
-from flask import request
+from flask import request, g
 
 from app.main.service.auth_helper import Auth
+from app.main.model.user import User
 
 
 def token_required(f):
@@ -13,6 +14,11 @@ def token_required(f):
 
         if not token:
             return data, status
+
+        user_id = data.get('data').get('user_id')
+        if user_id:
+            current_user = User.query.filter_by(id=user_id).first()
+            g.current_user = current_user
 
         return f(*args, **kwargs)
 

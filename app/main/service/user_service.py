@@ -1,6 +1,8 @@
 import uuid
 import datetime
 
+from sqlalchemy.exc import IntegrityError
+
 from app.main import db
 from app.main.model.user import User, Gender
 
@@ -44,7 +46,7 @@ def generate_token(user):
     except Exception as e:
         response_object = {
             'status': 'fail',
-            'message': 'Some error occurred. Please try again.'
+            'message': f'{str(e)}. Please try again.'
         }
         return response_object, 401
 
@@ -55,6 +57,46 @@ def get_all_users():
 
 def get_a_user(public_id):
     return User.query.filter_by(public_id=public_id).first()
+
+
+def update_user(public_id, data):
+    try:
+        user = User.query.filter_by(public_id=public_id).first()
+        user.first_name = data.get('first_name')
+        user.last_name = data.get('last_name')
+        user.date_of_birth = datetime.datetime.strptime(data.get('date_of_birth'), '%Y-%m-%d')
+        user.gender_id = data.get('gender_id')
+        user.city = data.get('city')
+        #user.interests = data.get('interests')
+        save_changes(user)
+        response_object = {
+            'status': 'success',
+            'message': 'Successfully updated.',
+            'user': user
+        }
+        return response_object, 200
+    except Exception as e:
+        response_object = {
+            'status': 'fail',
+            'message': f'{str(e)}. Please try again.'
+        }
+        return response_object, 500
+
+
+def delete_user(public_id):
+    try:
+        User.query.filter_by(public_id=public_id).delete()
+        response_object = {
+            'status': 'success',
+            'message': 'Successfully deleted user.',
+        }
+        return response_object, 204
+    except IntegrityError as e:
+        response_object = {
+            'status': 'fail',
+            'message': f'{str(e)}. Please try again.'
+        }
+        return response_object, 500
 
 
 def save_changes(data):

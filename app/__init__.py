@@ -11,7 +11,7 @@ authorizations = {
     'Bearer Auth': {
         'type': 'apiKey',
         'in': 'header',
-        'name': 'token'
+        'name': 'Authorization'
     },
 }
 

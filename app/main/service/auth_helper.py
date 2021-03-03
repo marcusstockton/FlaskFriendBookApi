@@ -16,9 +16,10 @@ class Auth:
                         'status': 'success',
                         'message': 'Successfully logged in.',
                         'username': user.username,
-                        'firstName': user.first_name,
-                        'lastName': user.last_name,
-                        'token': auth_token
+                        'first_name': user.first_name,
+                        'last_name': user.last_name,
+                        'token': auth_token,
+                        'public_id': user.public_id
                     }
                     return response_object, 200
             else:
@@ -59,7 +60,6 @@ class Auth:
                 'message': 'Provide a valid auth token.'
             }
             return response_object, 403
-
 
     @staticmethod
     def get_logged_in_user(new_request):

@@ -3,6 +3,7 @@ import json
 
 from app.test.base import BaseTestCase
 
+
 def register_user(self):
     return self.client.post(
         '/user/',
@@ -34,20 +35,20 @@ def login_user(self):
 class TestAuthBlueprint(BaseTestCase):
 
     def test_registered_user_login(self):
-            """ Test for login of registered-user login """
-            with self.client:
-                # user registration
-                user_response = register_user(self)
-                response_data = json.loads(user_response.data)
-                self.assertTrue('Authorization' in response_data)
-                self.assertTrue(str, type(response_data['Authorization']))
-                self.assertEqual(user_response.status_code, 201)
+        """ Test for login of registered-user login """
+        with self.client:
+            # user registration
+            user_response = register_user(self)
+            response_data = json.loads(user_response.data)
+            self.assertTrue('Authorization' in response_data)
+            self.assertTrue(str, type(response_data['Authorization']))
+            self.assertEqual(user_response.status_code, 201)
 
-                # registered user login
-                login_response = login_user(self)
-                data = json.loads(login_response.data)
-                self.assertTrue('token' in data)
-                self.assertEqual(login_response.status_code, 200)
+            # registered user login
+            login_response = login_user(self)
+            data = json.loads(login_response.data)
+            self.assertTrue('token' in data)
+            self.assertEqual(login_response.status_code, 200)
 
     def test_valid_logout(self):
         """ Test for logout before token expires """
